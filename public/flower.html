@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yha Bhar Lena</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #282c34;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .message {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out, moveUp 2s ease-in-out;
+            z-index: 10;
+        }
+
+        .flower-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 2s ease-in-out 1s, zoomIn 2s ease-in-out 1s;
+            z-index: 10;
+            position: relative;
+        }
+
+        .flower-container img {
+            max-width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .flower-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .shining-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            border: 5px solid transparent;
+            box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.5);
+            animation: shine 2s infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes shine {
+            0% {
+                box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.5), 0 0 30px 10px rgba(255, 255, 255, 0.3), 0 0 45px 15px rgba(255, 255, 255, 0.1);
+            }
+            100% {
+                box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.6), 0 0 40px 20px rgba(255, 255, 255, 0.4), 0 0 60px 30px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            animation: fly 6s ease-in-out infinite;
+        }
+
+        .heart {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            transform: rotate(45deg);
+            animation: flyHearts 5s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -25px;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: -25px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes moveUp {
+            from { transform: translateY(20px); }
+            to { transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+
+        @keyframes fly {
+            0% { bottom: -100px; transform: translateX(0); }
+            50% { transform: translateX(100px); }
+            100% { bottom: 110vh; transform: translateX(-100px); }
+        }
+
+        @keyframes flyHearts {
+            0% { bottom: -100px; opacity: 1; }
+            100% { bottom: 110vh; opacity: 0; transform: translateX(calc(-50vw + 100px)); }
+        }
+
+        .heart:nth-child(2) {
+            animation-delay: 2s;
+        }
+
+        .heart:nth-child(3) {
+            animation-delay: 4s;
+        }
+
+        .balloon:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        .balloon:nth-child(3) {
+            animation-delay: 3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">"lO BE "</div>
+    <div class="flower-container">
+        <img id="flowerImage" src="images/f1.jpg" alt="lode">
+        <div class="shining-border"></div>
+    </div>
+
+    <!-- Balloons -->
+    <div class="balloon" style="left: 10%; animation-duration: 7s;">
+        <img src="ballon.png" alt="Balloon" style="width: 100px;">
+    </div>
+    <div class="balloon" style="left: 50%; animation-duration: 9s;">
+        <img src="ballon.png" alt="Balloon" style="width: 150px;">
+    </div>
+    <div class="balloon" style="left: 80%; animation-duration: 8s;">
+        <img src="ballon.png" alt="Balloon" style="width: 120px;">
+    </div>
+
+    <!-- Hearts -->
+    <div class="heart" style="left: 20%;"></div>
+    <div class="heart" style="left: 60%;"></div>
+    <div class="heart" style="left: 40%;"></div>
+
+    <script>
+        function getRandomFlowerImage() {
+            const imageCount = 10; // Update this to 50 when you have all images in place
+            const randomIndex = Math.floor(Math.random() * imageCount) + 1;
+            const imagePath = `images/f${randomIndex}.jpg`;
+            console.log('Random flower image path:', imagePath); // Debugging line
+            return imagePath;
+        }
+
+        function displayRandomFlower() {
+            const randomFlowerImage = getRandomFlowerImage();
+            const flowerImageElement = document.getElementById('flowerImage');
+            flowerImageElement.src = randomFlowerImage;
+            flowerImageElement.onerror = function() {
+                console.error('Failed to load image:', randomFlowerImage); // Debugging line
+            };
+        }
+
+        // Display a random flower image on page load
+        window.onload = displayRandomFlower;
+    </script>
+</body>
+</html>
